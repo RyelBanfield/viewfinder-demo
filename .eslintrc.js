@@ -18,15 +18,15 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: [
-    'react',
-    '@typescript-eslint',
-    'simple-import-sort',
-  ],
+  plugins: ['react', '@typescript-eslint', 'simple-import-sort'],
   rules: {
-    'react/function-component-definition': [2, { namedComponents: 'arrow-function' }],
+    'react/function-component-definition': [
+      2,
+      { namedComponents: 'arrow-function' },
+    ],
     'simple-import-sort/imports': 'error',
     'simple-import-sort/exports': 'error',
     'arrow-body-style': 'off',
+    'react-hooks/exhaustive-deps': 'off',
   },
 };
