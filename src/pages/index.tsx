@@ -1,15 +1,17 @@
+/* eslint-disable max-len */
 import {
   createUserWithEmailAndPassword,
-  GoogleAuthProvider,
+  // GoogleAuthProvider,
   signInWithEmailAndPassword,
-  signInWithPopup,
+  // signInWithPopup,
 } from 'firebase/auth';
+import { addDoc, collection } from 'firebase/firestore';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 
 import { AuthContext } from '../context/AuthContext';
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
 
 const Authentication: NextPage = () => {
   const router = useRouter();
@@ -24,6 +26,17 @@ const Authentication: NextPage = () => {
   const handleSignUp = () => {
     setRouting(true);
     createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const usersCollection = collection(db, 'users');
+
+        const createUserData = async () => {
+          await addDoc(usersCollection, {
+            uid: userCredential.user.uid,
+          });
+        };
+
+        createUserData();
+      })
       .then(() => router.replace('/account'))
       .catch((error) => alert(error.message));
   };
@@ -35,13 +48,13 @@ const Authentication: NextPage = () => {
       .catch((error) => alert(error.message));
   };
 
-  const handleGoogleSignIn = () => {
-    setRouting(true);
-    const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider)
-      .then(() => router.replace('/home'))
-      .catch((error) => alert(error.message));
-  };
+  // const handleGoogleSignIn = () => {
+  //   setRouting(true);
+  //   const provider = new GoogleAuthProvider();
+  //   signInWithPopup(auth, provider)
+  //     .then(() => router.replace('/home'))
+  //     .catch((error) => alert(error.message));
+  // };
 
   useEffect(() => {
     if (user && !routing) router.replace('/home');
@@ -73,13 +86,13 @@ const Authentication: NextPage = () => {
             >
               Log In
             </button>
-            <button
+            {/* <button
               className="mb-2 rounded-md border-2 border-neutral-200 p-2 hover:bg-neutral-200 focus:border-neutral-500 focus:outline-none"
               type="button"
               onClick={() => handleGoogleSignIn()}
             >
               Sign in with Google
-            </button>
+            </button> */}
           </div>
           <div className="mt-3 flex w-64 justify-between border-t-2 pt-3">
             <p className="text-sm text-neutral-700">
@@ -117,13 +130,13 @@ const Authentication: NextPage = () => {
             >
               Create Account
             </button>
-            <button
+            {/* <button
               className="mb-2 rounded-md border-2 border-neutral-200 p-2 hover:bg-neutral-200 focus:border-neutral-500 focus:outline-none"
               type="button"
               onClick={() => handleGoogleSignIn()}
             >
               Sign in with Google
-            </button>
+            </button> */}
           </div>
           <div className="mt-3 flex w-64 justify-between border-t-2 pt-3">
             <p className="text-sm text-neutral-700">Have an account?</p>

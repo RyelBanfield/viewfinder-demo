@@ -2,16 +2,20 @@
 import { Menu, Transition } from '@headlessui/react';
 import { signOut } from 'firebase/auth';
 import Image from 'next/image';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useContext } from 'react';
 
 import { AuthContext } from '../context/AuthContext';
 import { auth } from '../firebase';
 
 const NavMenu = () => {
+  const router = useRouter();
   const user = useContext(AuthContext);
 
+  const handleGoHome = () => router.push('/home');
+  const handleGoAccount = () => router.push('/account');
   const handleSignOut = () => signOut(auth);
+
   return (
     user && (
       <Menu>
@@ -38,10 +42,14 @@ const NavMenu = () => {
         >
           <Menu.Items className="absolute right-0 mt-8 mr-8 flex w-48 flex-col items-center justify-between rounded-md border-2 bg-white p-4 shadow-lg outline-none">
             <Menu.Item>
-              <Link href="/home">Home</Link>
+              <button type="button" onClick={handleGoHome}>
+                Home
+              </button>
             </Menu.Item>
             <Menu.Item>
-              <Link href="/account">Account</Link>
+              <button type="button" onClick={handleGoAccount}>
+                Account
+              </button>
             </Menu.Item>
             <Menu.Item>
               <button type="button" onClick={handleSignOut}>
