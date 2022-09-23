@@ -1,27 +1,17 @@
 import { deleteUser, updateProfile } from 'firebase/auth';
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  query,
-  where,
-} from 'firebase/firestore';
 import { NextPage } from 'next';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { auth, db } from '../../firebase';
+import { auth } from '../../firebase';
 
 const Account: NextPage = () => {
-  const router = useRouter();
   const [displayName, setDisplayName] = useState('');
 
   const handleUpdateAccount = () => {
     const { currentUser } = auth;
     if (currentUser) {
       updateProfile(currentUser, { displayName })
-        .then(() => router.push('/home'))
+        .then()
         .catch((error) => alert(error));
     }
   };
@@ -30,23 +20,7 @@ const Account: NextPage = () => {
     const { currentUser } = auth;
     if (currentUser) {
       deleteUser(currentUser)
-        .then(() => {
-          const deleteUserData = async () => {
-            const usersCollection = collection(db, 'users');
-
-            const userQuery = query(
-              usersCollection,
-              where('uid', '==', currentUser.uid),
-            );
-
-            const userDoc = await getDocs(userQuery);
-            const userDocID = userDoc.docs[0].id;
-
-            await deleteDoc(doc(usersCollection, userDocID));
-          };
-
-          deleteUserData();
-        })
+        .then()
         .catch((error) => alert(error));
     }
   };

@@ -1,6 +1,5 @@
 {
   "name": "viewfinder-web",
-  "version": "0.1.0",
   "private": true,
   "scripts": {
     "build": "next build",
@@ -17,10 +16,10 @@
   "dependencies": {
     "@headlessui/react": "^1.7.2",
     "firebase": "^9.10.0",
-    "framer-motion": "^7.3.6",
     "next": "12.3.1",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-firebase-hooks": "^5.0.3"
   },
   "devDependencies": {
     "@types/node": "18.7.18",
