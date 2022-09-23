@@ -9,6 +9,7 @@ const db = admin.firestore();
 export const createUserDocument = functions.auth.user().onCreate((user) => {
   db.collection('users').doc(user.uid).set({
     uid: user.uid,
+    accountType: 'viewer',
   });
 });
 

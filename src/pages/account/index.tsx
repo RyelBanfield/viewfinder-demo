@@ -1,20 +1,36 @@
 import { deleteUser, updateProfile } from 'firebase/auth';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
-import { auth } from '../../firebase';
+import { AuthContext } from '../../context/AuthContext';
+import { auth, db } from '../../firebase';
 
 const Account: NextPage = () => {
   const router = useRouter();
-  const [displayName, setDisplayName] = useState('');
+  const user = useContext(AuthContext);
+
+  const [displayName, setDisplayName] = useState(user?.displayName || '');
+  const [currentAccountType, setCurrentAccountType] = useState<string | null>(
+    null,
+  );
+
+  const userRef = doc(db, 'users', user!.uid);
 
   const handleUpdateAccount = () => {
-    const { currentUser } = auth;
-    if (currentUser) {
-      updateProfile(currentUser, { displayName })
-        .then()
-        .catch((error) => alert(error));
+    updateProfile(user!, { displayName })
+      .then()
+      .catch((error) => alert(error));
+  };
+
+  const handleAccountTypeChange = async () => {
+    const userSnap = await getDoc(userRef);
+    if (userSnap.exists()) {
+      const { accountType } = userSnap.data();
+      const newAccountType = accountType === 'viewer' ? 'creator' : 'viewer';
+      await setDoc(userRef, { accountType: newAccountType }, { merge: true });
+      setCurrentAccountType(newAccountType);
     }
   };
 
@@ -27,8 +43,19 @@ const Account: NextPage = () => {
     }
   };
 
+  useEffect(() => {
+    const setUserAccountType = async () => {
+      const userSnap = await getDoc(userRef);
+      if (userSnap.exists()) {
+        const { accountType } = userSnap.data();
+        setCurrentAccountType(accountType);
+      }
+    };
+    setUserAccountType();
+  }, []);
+
   return (
-    <div className="flex-1 items-center justify-center p-3">
+    <main className="flex flex-grow flex-col items-center justify-center p-3">
       <h1 className="mb-6 text-3xl font-bold">Account Details</h1>
       <div className="flex w-64 flex-col">
         <h2>Display Name</h2>
@@ -44,15 +71,26 @@ const Account: NextPage = () => {
         >
           Update
         </button>
+        {currentAccountType && (
+          <button
+            className="mb-2 rounded-md border-2 border-neutral-200 p-2 hover:bg-neutral-200 focus:border-neutral-500 focus:outline-none"
+            type="button"
+            onClick={handleAccountTypeChange}
+          >
+            {currentAccountType === 'viewer'
+              ? 'Switch to Creator'
+              : 'Switch to Viewer'}
+          </button>
+        )}
         <button
-          className="mb-2 rounded-md border-2 border-neutral-200 p-2 hover:bg-red-600 focus:border-neutral-500 focus:outline-none"
+          className="mb-2 rounded-md bg-red-600 p-2 hover:bg-red-700 focus:border-neutral-500 focus:outline-none"
           type="button"
           onClick={handleDeleteAccount}
         >
           Delete Account
         </button>
       </div>
-    </div>
+    </main>
   );
 };
 
