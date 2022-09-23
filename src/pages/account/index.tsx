@@ -1,10 +1,12 @@
 import { deleteUser, updateProfile } from 'firebase/auth';
 import { NextPage } from 'next';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { auth } from '../../firebase';
 
 const Account: NextPage = () => {
+  const router = useRouter();
   const [displayName, setDisplayName] = useState('');
 
   const handleUpdateAccount = () => {
@@ -20,7 +22,7 @@ const Account: NextPage = () => {
     const { currentUser } = auth;
     if (currentUser) {
       deleteUser(currentUser)
-        .then()
+        .then(() => router.replace('/'))
         .catch((error) => alert(error));
     }
   };

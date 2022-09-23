@@ -14,7 +14,7 @@ const NavMenu = () => {
 
   const handleGoHome = () => router.push('/');
   const handleGoAccount = () => router.push('/account');
-  const handleSignOut = () => signOut(auth);
+  const handleSignOut = () => signOut(auth).then(() => router.replace('/'));
 
   return (
     <Menu>
