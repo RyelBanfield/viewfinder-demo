@@ -8,13 +8,12 @@ module.exports = {
     'airbnb',
     'airbnb-typescript',
     'next/core-web-vitals',
+    'prettier',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: ['./tsconfig.json'],
-    ecmaFeatures: {
-      jsx: true,
-    },
+    ecmaFeatures: { jsx: true },
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
@@ -26,7 +25,7 @@ module.exports = {
     ],
     'simple-import-sort/imports': 'error',
     'simple-import-sort/exports': 'error',
-    'arrow-body-style': 'off',
     'react-hooks/exhaustive-deps': 'off',
+    'react/jsx-props-no-spreading': 'off',
   },
 };
