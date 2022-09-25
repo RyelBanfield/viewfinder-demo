@@ -1,7 +1,7 @@
 /* eslint-disable operator-linebreak */
 import { Menu, Transition } from '@headlessui/react';
 import { signOut } from 'firebase/auth';
-import Image from 'next/image';
+import Image from 'next/future/image';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 
@@ -18,17 +18,16 @@ const NavMenu = () => {
 
   return (
     <Menu>
-      <Menu.Button className="w-12">
+      <Menu.Button className="">
         <Image
           className="rounded-full"
           src={
             user?.photoURL ||
             `https://avatars.dicebear.com/api/bottts/${user?.displayName}.svg`
           }
-          layout="responsive"
-          width={100}
-          height={100}
           alt="User profile picture"
+          width={40}
+          height={40}
         />
       </Menu.Button>
       <Transition
@@ -39,19 +38,31 @@ const NavMenu = () => {
         leaveFrom="transform scale-100 opacity-100"
         leaveTo="transform scale-95 opacity-0"
       >
-        <Menu.Items className="absolute right-0 mt-8 mr-8 flex w-48 flex-col items-center justify-between rounded-md border-2 bg-white p-4 shadow-lg outline-none">
+        <Menu.Items className="absolute right-0 mt-10 w-48 rounded-sm bg-white py-2 shadow-lg outline-none">
           <Menu.Item>
-            <button type="button" onClick={handleGoHome}>
+            <button
+              type="button"
+              className="w-full py-2 pl-3 text-left hover:bg-neutral-300"
+              onClick={handleGoHome}
+            >
               Home
             </button>
           </Menu.Item>
           <Menu.Item>
-            <button type="button" onClick={handleGoAccount}>
+            <button
+              type="button"
+              className="w-full py-2 pl-3 text-left hover:bg-neutral-300"
+              onClick={handleGoAccount}
+            >
               Account
             </button>
           </Menu.Item>
           <Menu.Item>
-            <button type="button" onClick={handleSignOut}>
+            <button
+              type="button"
+              className="w-full py-2 pl-3 text-left hover:bg-neutral-300"
+              onClick={handleSignOut}
+            >
               Sign out
             </button>
           </Menu.Item>

@@ -3,7 +3,12 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['lh3.googleusercontent.com', 'avatars.dicebear.com'],
+    domains: [
+      'lh3.googleusercontent.com',
+      'avatars.dicebear.com',
+      'firebasestorage.googleapis.com',
+      'ik.imagekit.io',
+    ],
   },
 };
 

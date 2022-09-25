@@ -5,20 +5,21 @@ import NavMenu from './NavMenu';
 
 const NavBar = () => {
   const router = useRouter();
+
   const handleGoSubmitPhotos = () => router.push('/submit-photos');
 
   return (
     <nav className="flex items-center justify-between p-3">
       <Link href="/">
         <button type="button" className="text-xl font-bold">
-          Viewfinder
+          VF
         </button>
       </Link>
 
       <div className="flex items-center justify-between">
         <button
           type="button"
-          className="mr-4 rounded-md border-2 border-neutral-200 p-2 hover:bg-neutral-200 focus:border-neutral-500 focus:outline-none"
+          className="mr-4 rounded-md bg-black p-2 text-white"
           onClick={handleGoSubmitPhotos}
         >
           Submit a photo
