@@ -3,6 +3,7 @@ import { NextPage } from 'next';
 import Image from 'next/image';
 import React, { useContext, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { v4 as uuidv4 } from 'uuid';
 
 import { AuthContext } from '../../context/AuthContext';
 import { storage } from '../../firebase';
@@ -50,10 +51,7 @@ const SubmitPhotos: NextPage = () => {
   const handleImageUpload = async () => {
     if (files.length > 0) {
       files.forEach(async (image) => {
-        const imageRef = ref(
-          storage,
-          `images/${user!.uid}/${Date.now()}_${image.name}`,
-        );
+        const imageRef = ref(storage, `${user!.uid}_${uuidv4()}`);
         await uploadBytes(imageRef, image);
       });
       alert('Upload successful!');
