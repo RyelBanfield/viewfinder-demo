@@ -2,7 +2,7 @@ import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithEmailAndPassword,
-  signInWithPopup,
+  signInWithRedirect,
 } from 'firebase/auth';
 import { useState } from 'react';
 
@@ -28,7 +28,7 @@ const Authentication = () => {
 
   const handleGoogleSignIn = () => {
     const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider)
+    signInWithRedirect(auth, provider)
       .then()
       .catch((error) => alert(error.message));
   };
