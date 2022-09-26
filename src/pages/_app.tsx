@@ -1,40 +1,33 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import '../styles/globals.css';
 
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import { useContext } from 'react';
+import { useRouter } from 'next/router';
 
-import Authentication from '../components/Authentication';
-import NavBar from '../components/Navbar';
-import { AuthContext, AuthProvider } from '../context/AuthContext';
+import Navbar from '../components/Navbar';
+import { AuthProvider } from '../context/AuthContext';
+import ProtectedRoute from '../ProtectedRoute';
+
+const noAuthRequired = ['/', '/login', '/join'];
 
 const App = ({ Component, pageProps }: AppProps) => {
-  const user = useContext(AuthContext);
-
-  return !user ? (
-    <>
+  const router = useRouter();
+  return (
+    <AuthProvider>
       <Head>
         <title>Viewfinder</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <Authentication />
-    </>
-  ) : (
-    <>
-      <Head>
-        <title>Viewfinder</title>
-      </Head>
-      <NavBar />
-      <Component {...pageProps} />
-    </>
+      <Navbar />
+      {noAuthRequired.includes(router.pathname) ? (
+        <Component {...pageProps} />
+      ) : (
+        <ProtectedRoute>
+          <Component {...pageProps} />
+        </ProtectedRoute>
+      )}
+    </AuthProvider>
   );
 };
 
-const AuthContextApp = ({ Component, pageProps }: AppProps) => (
-  <AuthProvider>
-    {/* @ts-ignore */}
-    <App Component={Component} pageProps={pageProps} />
-  </AuthProvider>
-);
-
-export default AuthContextApp;
+export default App;
