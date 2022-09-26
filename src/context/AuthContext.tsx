@@ -1,16 +1,29 @@
-import { User } from 'firebase/auth';
-import { createContext } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { onAuthStateChanged, User } from 'firebase/auth';
+import { createContext, useEffect, useState } from 'react';
 
 import Loading from '../components/Loading';
 import { auth } from '../firebase';
 
-export const AuthContext = createContext<User | null | undefined>(null);
+export const AuthContext = createContext<User | null>(null);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, loading] = useAuthState(auth);
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  if (loading) return <Loading />;
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (userData) => {
+      if (user) setUser(userData);
+      else setUser(null);
 
-  return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  return (
+    <AuthContext.Provider value={user}>
+      {loading ? <Loading /> : children}
+    </AuthContext.Provider>
+  );
 };

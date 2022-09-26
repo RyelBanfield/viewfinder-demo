@@ -1,4 +1,3 @@
-/* eslint-disable operator-linebreak */
 import { Menu, Transition } from '@headlessui/react';
 import { signOut } from 'firebase/auth';
 import Image from 'next/future/image';
@@ -21,7 +20,7 @@ const NavMenu = () => {
     <Menu>
       <Menu.Button className="">
         <Image
-          className="rounded-full"
+          className="rounded-full grayscale"
           src={
             user?.photoURL ||
             `https://avatars.dicebear.com/api/bottts/${user?.displayName}.svg`
@@ -49,33 +48,48 @@ const NavMenu = () => {
               Home
             </button>
           </Menu.Item>
-          <Menu.Item>
-            <button
-              type="button"
-              className="w-full py-2 pl-3 text-left hover:bg-neutral-300"
-              onClick={handleGoProfile}
-            >
-              Profile
-            </button>
-          </Menu.Item>
-          <Menu.Item>
-            <button
-              type="button"
-              className="w-full py-2 pl-3 text-left hover:bg-neutral-300"
-              onClick={handleGoAccount}
-            >
-              Account
-            </button>
-          </Menu.Item>
-          <Menu.Item>
-            <button
-              type="button"
-              className="w-full py-2 pl-3 text-left hover:bg-neutral-300"
-              onClick={handleSignOut}
-            >
-              Sign out
-            </button>
-          </Menu.Item>
+          {user && (
+            <>
+              <Menu.Item>
+                <button
+                  type="button"
+                  className="w-full py-2 pl-3 text-left hover:bg-neutral-300"
+                  onClick={handleGoProfile}
+                >
+                  Profile
+                </button>
+              </Menu.Item>
+              <Menu.Item>
+                <button
+                  type="button"
+                  className="w-full py-2 pl-3 text-left hover:bg-neutral-300"
+                  onClick={handleGoAccount}
+                >
+                  Account
+                </button>
+              </Menu.Item>
+              <Menu.Item>
+                <button
+                  type="button"
+                  className="w-full py-2 pl-3 text-left hover:bg-neutral-300"
+                  onClick={handleSignOut}
+                >
+                  Sign out
+                </button>
+              </Menu.Item>
+            </>
+          )}
+          {!user && (
+            <Menu.Item>
+              <button
+                type="button"
+                className="w-full py-2 pl-3 text-left hover:bg-neutral-300"
+                onClick={() => router.push('/login')}
+              >
+                Log in / Sign up
+              </button>
+            </Menu.Item>
+          )}
         </Menu.Items>
       </Transition>
     </Menu>

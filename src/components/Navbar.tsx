@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 
 import NavMenu from './NavMenu';
 
-const NavBar = () => {
+const Navbar = () => {
   const router = useRouter();
 
   const handleGoSubmitPhotos = () => router.push('/submit-photos');
@@ -30,4 +30,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;
+export default Navbar;
