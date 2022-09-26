@@ -13,6 +13,7 @@ const NavMenu = () => {
   const user = useContext(AuthContext);
 
   const handleGoHome = () => router.push('/');
+  const handleGoProfile = () => router.push('/profile');
   const handleGoAccount = () => router.push('/account');
   const handleSignOut = () => signOut(auth).then(() => router.replace('/'));
 
@@ -46,6 +47,15 @@ const NavMenu = () => {
               onClick={handleGoHome}
             >
               Home
+            </button>
+          </Menu.Item>
+          <Menu.Item>
+            <button
+              type="button"
+              className="w-full py-2 pl-3 text-left hover:bg-neutral-300"
+              onClick={handleGoProfile}
+            >
+              Profile
             </button>
           </Menu.Item>
           <Menu.Item>
