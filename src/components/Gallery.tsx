@@ -28,7 +28,7 @@ const Gallery = () => {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:px-3 md:grid-cols-3 lg:grid-cols-4">
+    <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
       {imagesToRender &&
         imagesToRender.map((image) => (
           <div key={image} className="flex items-center justify-center">
@@ -37,7 +37,7 @@ const Gallery = () => {
               alt="image"
               width={1920}
               height={1080}
-              className="inline-block h-full w-full max-w-full object-cover align-middle sm:rounded-md"
+              className="inline-block h-full w-full max-w-full rounded-md object-cover align-middle transition-opacity duration-300 ease-in-out hover:opacity-80"
             />
           </div>
         ))}

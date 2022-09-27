@@ -18,14 +18,16 @@ const App = ({ Component, pageProps }: AppProps) => {
         <title>Viewfinder</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <Navbar />
-      {noAuthRequired.includes(router.pathname) ? (
-        <Component {...pageProps} />
-      ) : (
-        <ProtectedRoute>
+      <div className="mx-auto w-11/12">
+        <Navbar />
+        {noAuthRequired.includes(router.pathname) ? (
           <Component {...pageProps} />
-        </ProtectedRoute>
-      )}
+        ) : (
+          <ProtectedRoute>
+            <Component {...pageProps} />
+          </ProtectedRoute>
+        )}
+      </div>
     </AuthProvider>
   );
 };

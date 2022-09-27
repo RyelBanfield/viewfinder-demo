@@ -38,7 +38,7 @@ const NavMenu = () => {
         leaveFrom="transform scale-100 opacity-100"
         leaveTo="transform scale-95 opacity-0"
       >
-        <Menu.Items className="absolute right-0 mt-10 w-48 rounded-sm bg-white py-2 shadow-lg outline-none">
+        <Menu.Items className="absolute right-0 mt-11 w-48 rounded-sm bg-white py-2 shadow-lg outline-none">
           <Menu.Item>
             <button
               type="button"
@@ -86,7 +86,7 @@ const NavMenu = () => {
                 className="w-full py-2 pl-3 text-left hover:bg-neutral-300"
                 onClick={() => router.push('/login')}
               >
-                Log in / Sign up
+                Log in
               </button>
             </Menu.Item>
           )}
