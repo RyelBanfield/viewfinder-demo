@@ -6,13 +6,6 @@ admin.initializeApp();
 
 const db = admin.firestore();
 
-// export const createUserDoc = functions.auth.user().onCreate((user) => {
-//   db.collection('users').doc(user.uid).set({
-//     uid: user.uid,
-//     accountType: 'viewer',
-//   });
-// });
-
 export const deleteUserDoc = functions.auth.user().onDelete((user) => {
   db.collection('users').doc(user.uid).delete();
 });
