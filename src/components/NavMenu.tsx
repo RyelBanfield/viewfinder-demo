@@ -23,11 +23,11 @@ const NavMenu = () => {
           className="rounded-full grayscale"
           src={
             user?.photoURL ||
-            `https://avatars.dicebear.com/api/bottts/${user?.displayName}.svg`
+            `https://avatars.dicebear.com/api/croodles-neutral/${user?.displayName}.svg`
           }
           alt="User profile picture"
-          width={40}
-          height={40}
+          width={30}
+          height={30}
         />
       </Menu.Button>
       <Transition
@@ -38,7 +38,7 @@ const NavMenu = () => {
         leaveFrom="transform scale-100 opacity-100"
         leaveTo="transform scale-95 opacity-0"
       >
-        <Menu.Items className="absolute right-0 mt-11 w-48 rounded-sm bg-white py-2 shadow-lg outline-none">
+        <Menu.Items className="absolute right-2 mt-12 w-48 rounded-sm bg-white py-2 shadow-lg outline-none">
           <Menu.Item>
             <button
               type="button"
