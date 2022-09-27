@@ -1,17 +1,26 @@
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { NextPage } from 'next';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { useContext, useEffect, useState } from 'react';
 
+import { AuthContext } from '../../context/AuthContext';
 import { auth } from '../../firebase';
 
 const Login: NextPage = () => {
+  const router = useRouter();
+  const user = useContext(AuthContext);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  useEffect(() => {
+    if (user) router.replace('/');
+  }, [user]);
+
   const handleSignIn = () => {
     signInWithEmailAndPassword(auth, email, password)
-      .then()
+      .then(() => router.replace('/'))
       .catch((error) => alert(error.message));
   };
 

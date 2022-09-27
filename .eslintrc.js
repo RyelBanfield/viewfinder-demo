@@ -27,5 +27,6 @@ module.exports = {
     'simple-import-sort/exports': 'error',
     'react-hooks/exhaustive-deps': 'off',
     'react/jsx-props-no-spreading': 'off',
+    'arrow-body-style': 'off',
   },
 };

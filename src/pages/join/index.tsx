@@ -1,23 +1,41 @@
-import {
-  createUserWithEmailAndPassword,
-  // getAdditionalUserInfo,
-} from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
 import { NextPage } from 'next';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { useContext, useEffect, useState } from 'react';
 
-import { auth } from '../../firebase';
+import { AuthContext } from '../../context/AuthContext';
+import { auth, db } from '../../firebase';
 
 const Join: NextPage = () => {
+  const router = useRouter();
+  const user = useContext(AuthContext);
+
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  useEffect(() => {
+    if (user) router.replace('/');
+  }, [user]);
+
   const handleSignUp = () => {
     createUserWithEmailAndPassword(auth, email, password)
-      .then()
+      .then(async (userCredential) => {
+        const userRef = doc(db, 'users', userCredential.user.uid);
+
+        await setDoc(userRef, {
+          uid: userCredential.user.uid,
+          username,
+          firstName,
+          lastName,
+          email,
+          accountType: 'viewer',
+        });
+      })
       .catch((error) => alert(error.message));
   };
 

@@ -6,18 +6,18 @@ admin.initializeApp();
 
 const db = admin.firestore();
 
-export const createUserDocument = functions.auth.user().onCreate((user) => {
-  db.collection('users').doc(user.uid).set({
-    uid: user.uid,
-    accountType: 'viewer',
-  });
-});
+// export const createUserDoc = functions.auth.user().onCreate((user) => {
+//   db.collection('users').doc(user.uid).set({
+//     uid: user.uid,
+//     accountType: 'viewer',
+//   });
+// });
 
-export const deleteUserDocument = functions.auth.user().onDelete((user) => {
+export const deleteUserDoc = functions.auth.user().onDelete((user) => {
   db.collection('users').doc(user.uid).delete();
 });
 
-export const createImageDocument = functions.storage
+export const createImageDoc = functions.storage
   .object()
   .onFinalize((object) => {
     const { name, bucket } = object;
@@ -30,9 +30,7 @@ export const createImageDocument = functions.storage
     });
   });
 
-export const deleteImageDocument = functions.storage
-  .object()
-  .onDelete((object) => {
-    const { name } = object;
-    db.collection('images').doc(name).delete();
-  });
+export const deleteImageDoc = functions.storage.object().onDelete((object) => {
+  const { name } = object;
+  db.collection('images').doc(name).delete();
+});
