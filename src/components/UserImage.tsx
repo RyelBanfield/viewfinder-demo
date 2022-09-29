@@ -5,17 +5,6 @@ const UserImage = ({ image }: { image: { uid: string; url: string } }) => {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      {/* <Image
-        className="rounded-full grayscale"
-        src={
-          user?.photoURL ||
-          `https://avatars.dicebear.com/api/croodles-neutral/${user?.displayName}.svg`
-        }
-        alt="User profile picture"
-        width={30}
-        height={30}
-      /> */}
-      {/* <p className="font-semibold">Ryel</p> */}
       <Image
         src={url}
         alt="image"
