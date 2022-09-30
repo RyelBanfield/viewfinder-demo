@@ -21,6 +21,7 @@
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.2",
     "react-loader-spinner": "^5.3.4",
+    "sharp": "^0.31.1",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

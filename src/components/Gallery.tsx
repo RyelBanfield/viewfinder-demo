@@ -29,7 +29,7 @@ const Gallery = () => {
   }, []);
 
   return (
-    <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+    <div className="mb-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
       {imagesToRender &&
         imagesToRender.map((image: { uid: string; url: string }) => (
           <UserImage key={image.url} image={image} />
