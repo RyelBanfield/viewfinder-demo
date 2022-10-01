@@ -9,7 +9,7 @@ import {
 import { ref, uploadBytes } from 'firebase/storage';
 import { NextPage } from 'next';
 import Image from 'next/image';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { v4 as uuidv4 } from 'uuid';
 
