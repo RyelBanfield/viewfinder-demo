@@ -1,6 +1,5 @@
 import { Menu, Transition } from '@headlessui/react';
 import { signOut } from 'firebase/auth';
-import Image from 'next/future/image';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 
@@ -18,17 +17,12 @@ const NavMenu = () => {
 
   return (
     <Menu>
-      <Menu.Button className="">
-        <Image
-          className="rounded-full"
-          src={
-            user?.photoURL ||
-            `https://avatars.dicebear.com/api/croodles-neutral/${user?.displayName}.svg`
-          }
-          alt="User profile picture"
-          width={30}
-          height={30}
-        />
+      <Menu.Button className="rounded-full p-2 hover:bg-gray-100">
+        <svg viewBox="0 0 100 80" width="20" height="20">
+          <rect width="100" height="20" />
+          <rect y="30" width="100" height="20" />
+          <rect y="60" width="100" height="20" />
+        </svg>
       </Menu.Button>
       <Transition
         enter="transition duration-100 ease-out"

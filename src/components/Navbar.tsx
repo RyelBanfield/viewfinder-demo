@@ -12,7 +12,7 @@ const Navbar = () => {
       </Link>
       <div className="flex items-center justify-between">
         <Link href="/submit-photos">
-          <button type="button" className="mr-6 font-medium">
+          <button type="button" className="mr-6 font-medium hover:underline">
             Submit a photo
           </button>
         </Link>
