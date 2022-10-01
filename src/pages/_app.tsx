@@ -12,13 +12,14 @@ const noAuthRequired = ['/', '/login', '/join'];
 
 const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
+
   return (
     <AuthProvider>
       <Head>
         <title>Viewfinder</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <div className="mx-auto w-11/12">
+      <div className="mx-auto flex w-11/12 flex-grow flex-col">
         <Navbar />
         {noAuthRequired.includes(router.pathname) ? (
           <Component {...pageProps} />

@@ -40,7 +40,7 @@ const Join: NextPage = () => {
   };
 
   return (
-    <main className="flex flex-grow flex-col items-center justify-center bg-neutral-100 text-neutral-900 antialiased">
+    <main className="flex flex-grow flex-col items-center justify-center">
       <h1 className="mb-6 text-3xl font-bold">Join Viewfinder</h1>
       <div className="flex w-96 flex-col">
         <div className="flex justify-between">
@@ -87,7 +87,7 @@ const Join: NextPage = () => {
       <div className="mt-3 flex w-96 justify-between border-t-2 pt-3">
         <p className="text-sm text-neutral-700">Already have an account?</p>
         <Link href="/login">
-          <p className="text-sm font-bold text-neutral-700 hover:underline">
+          <p className="cursor-pointer text-sm font-bold text-neutral-700 hover:underline">
             Login
           </p>
         </Link>
