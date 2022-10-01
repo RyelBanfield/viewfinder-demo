@@ -1,3 +1,11 @@
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from 'firebase/firestore/lite';
 import { ref, uploadBytes } from 'firebase/storage';
 import { NextPage } from 'next';
 import Image from 'next/image';
@@ -6,7 +14,7 @@ import { useDropzone } from 'react-dropzone';
 import { v4 as uuidv4 } from 'uuid';
 
 import { AuthContext } from '../../context/AuthContext';
-import { storage } from '../../firebase';
+import { db, storage } from '../../firebase';
 
 type FileWithPreview = File & { preview: string };
 
@@ -50,9 +58,26 @@ const SubmitPhotos: NextPage = () => {
 
   const handleImageUpload = async () => {
     if (files.length > 0) {
+      const usersRef = collection(db, 'users');
+      const userQuery = query(usersRef, where('uid', '==', user!.uid));
+      const userSnapshot = await getDocs(userQuery);
+      const userDoc = userSnapshot.docs[0];
+
       files.forEach(async (image) => {
-        const imageRef = ref(storage, `${user!.uid}_${uuidv4()}`);
-        await uploadBytes(imageRef, image);
+        const uniqueID = uuidv4();
+        const imageName = `${user!.uid}_${uniqueID}`;
+
+        const imageStorageRef = ref(storage, imageName);
+        const imageDocumentRef = doc(db, 'images', imageName);
+
+        await uploadBytes(imageStorageRef, image);
+        await setDoc(imageDocumentRef, {
+          uid: user!.uid,
+          username: userDoc.data().username,
+          firstName: userDoc.data().firstName,
+          lastName: userDoc.data().lastName,
+          url: `https://firebasestorage.googleapis.com/v0/b/viewfinder-dev.appspot.com/o/${imageName}?alt=media`,
+        });
       });
       alert('Upload successful!');
     }
