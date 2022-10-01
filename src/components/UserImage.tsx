@@ -1,19 +1,51 @@
 import Image from 'next/future/image';
 
-const UserImage = ({ image }: { image: { uid: string; url: string } }) => {
-  const { url } = image;
+const UserImage = ({
+  image,
+}: {
+  image: { username: string; firstName: string; lastName: string; url: string };
+}) => {
+  const { firstName, lastName, url } = image;
+
+  const handleDownload = () => {
+    fetch(url)
+      .then((res) => res.blob())
+      .then((blob) => {
+        const href = window.URL.createObjectURL(new Blob([blob]));
+        const link = document.createElement('a');
+        link.href = href;
+        link.setAttribute('download', `${firstName}_${lastName}.jpg`);
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode?.removeChild(link);
+      });
+  };
 
   return (
-    <div className="relative flex h-72 flex-col items-center justify-center">
-      <Image
-        src={url}
-        alt="image"
-        fill
-        sizes="(max-width: 768px) 100vw,
+    <div className="flex flex-col">
+      <div className="mb-1 flex items-center">
+        <p className="text-md font-semibold">{`
+          ${firstName} ${lastName}
+        `}</p>
+      </div>
+      <div className="relative h-72 w-full">
+        <Image
+          src={url}
+          alt="image"
+          fill
+          sizes="(max-width: 768px) 100vw,
               (max-width: 1200px) 50vw,
               33vw"
-        className="rounded-md object-cover"
-      />
+          className="rounded-md object-cover"
+        />
+      </div>
+      <button
+        type="button"
+        onClick={handleDownload}
+        className="mt-2 ml-auto w-fit cursor-pointer rounded-md bg-gray-100 p-1 text-sm text-gray-500 hover:bg-gray-200"
+      >
+        Download
+      </button>
     </div>
   );
 };

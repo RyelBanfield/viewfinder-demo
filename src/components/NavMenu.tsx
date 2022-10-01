@@ -20,7 +20,7 @@ const NavMenu = () => {
     <Menu>
       <Menu.Button className="">
         <Image
-          className="rounded-full grayscale"
+          className="rounded-full"
           src={
             user?.photoURL ||
             `https://avatars.dicebear.com/api/croodles-neutral/${user?.displayName}.svg`

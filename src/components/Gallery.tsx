@@ -13,7 +13,9 @@ const Gallery = () => {
       const querySnapshot = await getDocs(collection(db, 'images'));
       querySnapshot.forEach((doc) => {
         imageData.push({
-          uid: doc.data().uid,
+          username: doc.data().username,
+          firstName: doc.data().firstName,
+          lastName: doc.data().lastName,
           url: doc
             .data()
             .url.replace(
@@ -31,9 +33,14 @@ const Gallery = () => {
   return (
     <div className="mb-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
       {imagesToRender &&
-        imagesToRender.map((image: { uid: string; url: string }) => (
-          <UserImage key={image.url} image={image} />
-        ))}
+        imagesToRender.map(
+          (image: {
+            username: string;
+            firstName: string;
+            lastName: string;
+            url: string;
+          }) => <UserImage key={image.url} image={image} />,
+        )}
     </div>
   );
 };
