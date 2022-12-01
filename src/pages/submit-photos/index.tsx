@@ -57,7 +57,7 @@ const SubmitPhotos: NextPage = () => {
   );
 
   const handleImageUpload = async () => {
-    if (files.length > 0) {
+    if (files.length > 0 && user !== 'loading') {
       const usersRef = collection(db, 'users');
       const userQuery = query(usersRef, where('uid', '==', user!.uid));
       const userSnapshot = await getDocs(userQuery);
