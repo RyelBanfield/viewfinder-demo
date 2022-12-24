@@ -1,39 +1,11 @@
-import { collection, getDocs } from 'firebase/firestore/lite';
-import { useEffect, useState } from 'react';
-
-import { db } from '../firebase';
+import type { Image } from '../pages';
 import UserImage from './UserImage';
 
-const Gallery = () => {
-  const [imagesToRender, setImagesToRender] = useState<[] | null>(null);
-
-  useEffect(() => {
-    const getImages = async () => {
-      const imageData: any = [];
-      const querySnapshot = await getDocs(collection(db, 'images'));
-      querySnapshot.forEach((doc) => {
-        imageData.push({
-          username: doc.data().username,
-          firstName: doc.data().firstName,
-          lastName: doc.data().lastName,
-          url: doc
-            .data()
-            .url.replace(
-              'https://firebasestorage.googleapis.com',
-              'https://ik.imagekit.io/zuge4mgxf',
-            ),
-        });
-      });
-      setImagesToRender(imageData);
-    };
-
-    getImages();
-  }, []);
-
+const Gallery = ({ images }: { images: Image[] | null }) => {
   return (
     <div className="mb-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
-      {imagesToRender &&
-        imagesToRender.map(
+      {images &&
+        images.map(
           (image: {
             username: string;
             firstName: string;

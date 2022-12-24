@@ -31,12 +31,13 @@ const UserImage = ({
       <div className="relative h-72 w-full">
         <Image
           src={url}
-          alt="image"
+          alt="User Image"
           fill
           sizes="(max-width: 768px) 100vw,
               (max-width: 1200px) 50vw,
               33vw"
-          className="rounded-md object-cover"
+          priority
+          className="object-cover hover:object-scale-down"
         />
       </div>
       <button
