@@ -24,9 +24,9 @@ const Home: NextPage<{ images: Image[] }> = ({ images }: Props) => {
 export const getServerSideProps = async () => {
   const imageData: Image[] = [];
 
-  const querySnapshot = await getDocs(collection(db, "images"));
+  const imagesDocs = await getDocs(collection(db, "images"));
 
-  querySnapshot.forEach((doc) => {
+  imagesDocs.forEach((doc) => {
     imageData.push({
       id: doc.id,
       uid: doc.data().uid,
@@ -42,10 +42,8 @@ export const getServerSideProps = async () => {
     });
   });
 
-  const images = imageData;
-
   return {
-    props: { images },
+    props: { images: imageData },
   };
 };
 
