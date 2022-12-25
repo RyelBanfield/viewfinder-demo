@@ -16,7 +16,7 @@ export type Image = {
 const Home: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ images }) => {
-  return <Gallery images={images} />;
+  return <Gallery images={images} showNames={true} />;
 };
 
 export const getServerSideProps = async () => {

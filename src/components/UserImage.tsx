@@ -3,7 +3,13 @@ import Link from "next/link";
 
 import type { Image as ImageType } from "../pages";
 
-const UserImage = ({ image }: { image: ImageType }) => {
+const UserImage = ({
+  image,
+  withName,
+}: {
+  image: ImageType;
+  withName: boolean;
+}) => {
   const handleDownload = () => {
     fetch(image.url)
       .then((res) => res.blob())
@@ -37,15 +43,30 @@ const UserImage = ({ image }: { image: ImageType }) => {
       </div>
 
       <div className="flex items-center justify-between">
-        <Link href={`/${image.username}`}>
-          <p className="text-md font-semibold">{`${image.firstName} ${image.lastName}`}</p>
-        </Link>
+        {withName && (
+          <Link href={`/${image.username}`}>
+            <p className="text-md font-semibold">{`${image.firstName} ${image.lastName}`}</p>
+          </Link>
+        )}
         <button
           type="button"
           onClick={handleDownload}
           className="cursor-pointer rounded bg-neutral-900 p-2 text-sm text-neutral-100"
         >
-          Download
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="h-4 w-4"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+            />
+          </svg>
         </button>
       </div>
     </div>

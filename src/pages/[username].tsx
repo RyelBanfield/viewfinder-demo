@@ -36,10 +36,11 @@ const UserProfile: NextPage<
       </Head>
 
       <h1 className="mb-8 text-2xl font-semibold md:text-3xl">
-        {user.firstName} {user.lastName}
+        {user.firstName} {user.lastName} | {images.length}
+        {" " + "images"}
       </h1>
 
-      <Gallery images={images} />
+      <Gallery images={images} showNames={false} />
 
       <div className=""></div>
     </>
