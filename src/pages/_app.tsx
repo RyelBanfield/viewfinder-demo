@@ -34,6 +34,7 @@ const App = ({ Component, pageProps }: AppProps) => {
               opacity: 1,
             },
           }}
+          className="flex flex-grow flex-col"
         >
           {noAuthRequired.includes(router.pathname) ? (
             <Component {...pageProps} />

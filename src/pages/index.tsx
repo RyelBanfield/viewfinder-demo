@@ -17,14 +17,8 @@ type Props = {
   images: Image[];
 };
 
-const Home: NextPage<{ randomHeroImage: string; images: Image[] }> = ({
-  images,
-}: Props) => {
-  return (
-    <main className="flex flex-grow flex-col">
-      <Gallery images={images} />
-    </main>
-  );
+const Home: NextPage<{ images: Image[] }> = ({ images }: Props) => {
+  return <Gallery images={images} />;
 };
 
 export const getServerSideProps = async () => {
