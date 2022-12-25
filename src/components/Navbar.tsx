@@ -4,7 +4,7 @@ import NavMenu from './NavMenu';
 
 const Navbar = () => {
   return (
-    <nav className="flex items-center justify-between py-6">
+    <nav className="z-10 flex items-center justify-between py-6">
       <Link href="/">
         <button type="button" className="text-xl font-bold">
           VF
