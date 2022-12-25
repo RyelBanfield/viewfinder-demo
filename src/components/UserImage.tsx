@@ -4,16 +4,17 @@ import Link from "next/link";
 import type { Image as ImageType } from "../pages";
 
 const UserImage = ({ image }: { image: ImageType }) => {
-  const { firstName, lastName, url } = image;
-
   const handleDownload = () => {
-    fetch(url)
+    fetch(image.url)
       .then((res) => res.blob())
       .then((blob) => {
         const href = window.URL.createObjectURL(new Blob([blob]));
         const link = document.createElement("a");
         link.href = href;
-        link.setAttribute("download", `${firstName}_${lastName}.jpg`);
+        link.setAttribute(
+          "download",
+          `${image.firstName}_${image.lastName}.jpg`
+        );
         document.body.appendChild(link);
         link.click();
         link.parentNode?.removeChild(link);
@@ -24,7 +25,7 @@ const UserImage = ({ image }: { image: ImageType }) => {
     <div>
       <div className="relative mb-3 h-[600px] w-full">
         <Image
-          src={url}
+          src={image.url}
           alt="User Image"
           fill
           sizes="(max-width: 768px) 100vw,
@@ -36,8 +37,8 @@ const UserImage = ({ image }: { image: ImageType }) => {
       </div>
 
       <div className="flex items-center justify-between">
-        <Link href="/">
-          <p className="text-md font-semibold">{`${firstName} ${lastName}`}</p>
+        <Link href={`/${image.username}`}>
+          <p className="text-md font-semibold">{`${image.firstName} ${image.lastName}`}</p>
         </Link>
         <button
           type="button"
