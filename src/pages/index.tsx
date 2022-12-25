@@ -1,5 +1,5 @@
 import { collection, getDocs } from "firebase/firestore/lite";
-import { NextPage } from "next";
+import { InferGetServerSidePropsType, NextPage } from "next";
 
 import Gallery from "../components/Gallery";
 import { db } from "../firebase";
@@ -13,21 +13,17 @@ export type Image = {
   url: string;
 };
 
-type Props = {
-  images: Image[];
-};
-
-const Home: NextPage<{ images: Image[] }> = ({ images }: Props) => {
+const Home: NextPage<
+  InferGetServerSidePropsType<typeof getServerSideProps>
+> = ({ images }) => {
   return <Gallery images={images} />;
 };
 
 export const getServerSideProps = async () => {
-  const imageData: Image[] = [];
-
   const imagesDocs = await getDocs(collection(db, "images"));
 
-  imagesDocs.forEach((doc) => {
-    imageData.push({
+  const images = imagesDocs.docs.map((doc) => {
+    return {
       id: doc.id,
       uid: doc.data().uid,
       username: doc.data().username,
@@ -39,11 +35,11 @@ export const getServerSideProps = async () => {
           "https://firebasestorage.googleapis.com",
           "https://ik.imagekit.io/zuge4mgxf"
         ),
-    });
-  });
+    };
+  }) as Image[];
 
   return {
-    props: { images: imageData },
+    props: { images },
   };
 };
 
