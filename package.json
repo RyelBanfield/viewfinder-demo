@@ -7,12 +7,6 @@
     "lint": "next lint",
     "start": "next start"
   },
-  "prettier": {
-    "semi": true,
-    "singleQuote": true,
-    "tabWidth": 2,
-    "trailingComma": "all"
-  },
   "dependencies": {
     "@headlessui/react": "^1.7.7",
     "firebase": "^9.15.0",
