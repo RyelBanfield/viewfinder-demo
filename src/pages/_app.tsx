@@ -1,14 +1,15 @@
-import '../styles/globals.css';
+import "../styles/globals.css";
 
-import type { AppProps } from 'next/app';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
+import { motion } from "framer-motion";
+import type { AppProps } from "next/app";
+import Head from "next/head";
+import { useRouter } from "next/router";
 
-import Navbar from '../components/Navbar';
-import { AuthProvider } from '../context/AuthContext';
-import ProtectedRoute from '../ProtectedRoute';
+import Navbar from "../components/Navbar";
+import { AuthProvider } from "../context/AuthContext";
+import ProtectedRoute from "../ProtectedRoute";
 
-const noAuthRequired = ['/', '/login', '/join'];
+const noAuthRequired = ["/", "/login", "/join"];
 
 const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
@@ -21,13 +22,27 @@ const App = ({ Component, pageProps }: AppProps) => {
       </Head>
       <div className="mx-auto flex w-11/12 flex-grow flex-col">
         <Navbar />
-        {noAuthRequired.includes(router.pathname) ? (
-          <Component {...pageProps} />
-        ) : (
-          <ProtectedRoute>
+        <motion.main
+          key={router.route}
+          initial="pageInitial"
+          animate="pageAnimate"
+          variants={{
+            pageInitial: {
+              opacity: 0,
+            },
+            pageAnimate: {
+              opacity: 1,
+            },
+          }}
+        >
+          {noAuthRequired.includes(router.pathname) ? (
             <Component {...pageProps} />
-          </ProtectedRoute>
-        )}
+          ) : (
+            <ProtectedRoute>
+              <Component {...pageProps} />
+            </ProtectedRoute>
+          )}
+        </motion.main>
       </div>
     </AuthProvider>
   );

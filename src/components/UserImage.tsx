@@ -1,10 +1,9 @@
-import Image from 'next/image';
+import Image from "next/image";
+import Link from "next/link";
 
-const UserImage = ({
-  image,
-}: {
-  image: { username: string; firstName: string; lastName: string; url: string };
-}) => {
+import type { Image as ImageType } from "../pages";
+
+const UserImage = ({ image }: { image: ImageType }) => {
   const { firstName, lastName, url } = image;
 
   const handleDownload = () => {
@@ -12,9 +11,9 @@ const UserImage = ({
       .then((res) => res.blob())
       .then((blob) => {
         const href = window.URL.createObjectURL(new Blob([blob]));
-        const link = document.createElement('a');
+        const link = document.createElement("a");
         link.href = href;
-        link.setAttribute('download', `${firstName}_${lastName}.jpg`);
+        link.setAttribute("download", `${firstName}_${lastName}.jpg`);
         document.body.appendChild(link);
         link.click();
         link.parentNode?.removeChild(link);
@@ -22,13 +21,8 @@ const UserImage = ({
   };
 
   return (
-    <div className="flex flex-col">
-      <div className="mb-1 flex items-center">
-        <p className="text-md font-semibold">{`
-          ${firstName} ${lastName}
-        `}</p>
-      </div>
-      <div className="relative h-72 w-full">
+    <div>
+      <div className="relative mb-3 h-[600px] w-full">
         <Image
           src={url}
           alt="User Image"
@@ -37,16 +31,22 @@ const UserImage = ({
               (max-width: 1200px) 50vw,
               33vw"
           priority
-          className="object-cover hover:object-scale-down"
+          className="object-cover object-top transition-all duration-300 hover:cursor-pointer hover:opacity-90 hover:shadow-lg"
         />
       </div>
-      <button
-        type="button"
-        onClick={handleDownload}
-        className="mt-2 ml-auto w-fit cursor-pointer rounded-md bg-gray-100 p-1 text-sm text-gray-500 hover:bg-gray-200"
-      >
-        Download
-      </button>
+
+      <div className="flex items-center justify-between">
+        <Link href="/">
+          <p className="text-md font-semibold">{`${firstName} ${lastName}`}</p>
+        </Link>
+        <button
+          type="button"
+          onClick={handleDownload}
+          className="cursor-pointer rounded bg-neutral-900 p-2 text-sm text-neutral-100"
+        >
+          Download
+        </button>
+      </div>
     </div>
   );
 };

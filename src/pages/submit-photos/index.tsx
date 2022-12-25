@@ -5,16 +5,16 @@ import {
   query,
   setDoc,
   where,
-} from 'firebase/firestore/lite';
-import { ref, uploadBytes } from 'firebase/storage';
-import { NextPage } from 'next';
-import Image from 'next/image';
-import { useContext, useEffect, useState } from 'react';
-import { useDropzone } from 'react-dropzone';
-import { v4 as uuidv4 } from 'uuid';
+} from "firebase/firestore/lite";
+import { ref, uploadBytes } from "firebase/storage";
+import { NextPage } from "next";
+import Image from "next/image";
+import { useContext, useEffect, useState } from "react";
+import { useDropzone } from "react-dropzone";
+import { v4 as uuidv4 } from "uuid";
 
-import { AuthContext } from '../../context/AuthContext';
-import { db, storage } from '../../firebase';
+import { AuthContext } from "../../context/AuthContext";
+import { db, storage } from "../../firebase";
 
 type FileWithPreview = File & { preview: string };
 
@@ -23,7 +23,7 @@ const SubmitPhotos: NextPage = () => {
   const [files, setFiles] = useState<FileWithPreview[]>([]);
 
   const { getRootProps, getInputProps } = useDropzone({
-    accept: { 'image/*': [] },
+    accept: { "image/*": [] },
     maxFiles: 9,
 
     onDrop: (acceptedFiles) => {
@@ -31,8 +31,8 @@ const SubmitPhotos: NextPage = () => {
         acceptedFiles.map((file) =>
           Object.assign(file, {
             preview: URL.createObjectURL(file),
-          }),
-        ),
+          })
+        )
       );
     },
   });
@@ -53,33 +53,35 @@ const SubmitPhotos: NextPage = () => {
 
   useEffect(
     () => () => files.forEach((file) => URL.revokeObjectURL(file.preview)),
-    [],
+    []
   );
 
   const handleImageUpload = async () => {
-    if (files.length > 0 && user !== 'loading') {
-      const usersRef = collection(db, 'users');
-      const userQuery = query(usersRef, where('uid', '==', user!.uid));
+    if (files.length > 0 && user !== "loading") {
+      const usersRef = collection(db, "users");
+      const userQuery = query(usersRef, where("uid", "==", user!.uid));
       const userSnapshot = await getDocs(userQuery);
       const userDoc = userSnapshot.docs[0];
 
       files.forEach(async (image) => {
         const uniqueID = uuidv4();
-        const imageName = `${user!.uid}_${uniqueID}`;
+        const imageName = `${user?.uid}_${uniqueID}`;
 
         const imageStorageRef = ref(storage, imageName);
-        const imageDocumentRef = doc(db, 'images', imageName);
+        const imageDocumentRef = doc(db, "images", imageName);
 
         await uploadBytes(imageStorageRef, image);
-        await setDoc(imageDocumentRef, {
-          uid: user!.uid,
-          username: userDoc.data().username,
-          firstName: userDoc.data().firstName,
-          lastName: userDoc.data().lastName,
-          url: `https://firebasestorage.googleapis.com/v0/b/viewfinder-dev.appspot.com/o/${imageName}?alt=media`,
-        });
+        if (user && userDoc) {
+          await setDoc(imageDocumentRef, {
+            uid: user.uid,
+            username: userDoc.data().username,
+            firstName: userDoc.data().firstName,
+            lastName: userDoc.data().lastName,
+            url: `https://firebasestorage.googleapis.com/v0/b/viewfinder-dev.appspot.com/o/${imageName}?alt=media`,
+          });
+        }
       });
-      alert('Upload successful!');
+      alert("Upload successful!");
     }
   };
 
@@ -91,7 +93,7 @@ const SubmitPhotos: NextPage = () => {
       >
         <input {...getInputProps()} />
         <p className="text-center text-xl">
-          Drag and drop up to 9 images or{' '}
+          Drag and drop up to 9 images or{" "}
           <span className="cursor-pointer font-bold">Browse</span> to choose a
           file
         </p>
