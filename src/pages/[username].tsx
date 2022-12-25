@@ -41,8 +41,6 @@ const UserProfile: NextPage<
       </h1>
 
       <Gallery images={images} showNames={false} />
-
-      <div className=""></div>
     </>
   );
 };

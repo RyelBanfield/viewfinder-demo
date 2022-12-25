@@ -1,31 +1,31 @@
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { NextPage } from 'next';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useContext, useEffect, useState } from 'react';
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { NextPage } from "next";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
 
-import { AuthContext } from '../../context/AuthContext';
-import { auth } from '../../firebase';
+import { AuthContext } from "../../context/AuthContext";
+import { auth } from "../../firebase";
 
 const Login: NextPage = () => {
   const router = useRouter();
   const user = useContext(AuthContext);
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
-    if (user) router.replace('/');
+    if (user) router.replace("/");
   }, [user]);
 
   const handleSignIn = () => {
     signInWithEmailAndPassword(auth, email, password)
-      .then(() => router.replace('/'))
+      .then(() => router.replace("/"))
       .catch((error) => alert(error.message));
   };
 
   return (
-    <main className="flex flex-grow flex-col items-center justify-center">
+    <div className="flex flex-grow flex-col items-center justify-center">
       <h1 className="mb-2 text-3xl font-bold">Viewfinder</h1>
       <h2 className="mb-6 text-sm">Welcome back.</h2>
       <div className="flex w-64 flex-col">
@@ -58,7 +58,7 @@ const Login: NextPage = () => {
           </p>
         </Link>
       </div>
-    </main>
+    </div>
   );
 };
 

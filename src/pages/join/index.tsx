@@ -1,31 +1,31 @@
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore/lite';
-import { NextPage } from 'next';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useContext, useEffect, useState } from 'react';
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore/lite";
+import { NextPage } from "next";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
 
-import { AuthContext } from '../../context/AuthContext';
-import { auth, db } from '../../firebase';
+import { AuthContext } from "../../context/AuthContext";
+import { auth, db } from "../../firebase";
 
 const Join: NextPage = () => {
   const router = useRouter();
   const user = useContext(AuthContext);
 
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
-    if (user) router.replace('/');
+    if (user) router.replace("/");
   }, [user]);
 
   const handleSignUp = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
-        const userRef = doc(db, 'users', userCredential.user.uid);
+        const userRef = doc(db, "users", userCredential.user.uid);
 
         await setDoc(userRef, {
           uid: userCredential.user.uid,
@@ -33,14 +33,14 @@ const Join: NextPage = () => {
           firstName,
           lastName,
           email,
-          accountType: 'viewer',
+          accountType: "viewer",
         });
       })
       .catch((error) => alert(error.message));
   };
 
   return (
-    <main className="flex flex-grow flex-col items-center justify-center">
+    <div className="flex flex-grow flex-col items-center justify-center">
       <h1 className="mb-6 text-3xl font-bold">Join Viewfinder</h1>
       <div className="flex w-96 flex-col">
         <div className="flex justify-between">
@@ -92,7 +92,7 @@ const Join: NextPage = () => {
           </p>
         </Link>
       </div>
-    </main>
+    </div>
   );
 };
 

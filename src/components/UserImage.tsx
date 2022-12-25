@@ -51,7 +51,7 @@ const UserImage = ({
         <button
           type="button"
           onClick={handleDownload}
-          className="cursor-pointer rounded bg-neutral-900 p-2 text-sm text-neutral-100"
+          className="ml-auto cursor-pointer rounded bg-neutral-900 p-2 text-sm text-neutral-100"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
