@@ -29,7 +29,15 @@ const UserImage = ({
 
   return (
     <div>
-      <div className="relative mb-3 h-[600px] w-full">
+      <div className="mb-1 flex items-center justify-between">
+        {withName && (
+          <Link href={`/${image.username}`}>
+            <p className="text-md font-semibold">{`${image.firstName} ${image.lastName}`}</p>
+          </Link>
+        )}
+      </div>
+
+      <div className="relative h-[600px] w-full">
         <Image
           src={image.url}
           alt="User Image"
@@ -38,20 +46,14 @@ const UserImage = ({
               (max-width: 1200px) 50vw,
               33vw"
           priority
-          className="object-cover object-top transition-all duration-300 hover:cursor-pointer hover:opacity-90 hover:shadow-lg"
+          quality={100}
+          className="object-cover object-top transition-all duration-300 hover:opacity-90 hover:shadow-lg"
         />
-      </div>
 
-      <div className="flex items-center justify-between">
-        {withName && (
-          <Link href={`/${image.username}`}>
-            <p className="text-md font-semibold">{`${image.firstName} ${image.lastName}`}</p>
-          </Link>
-        )}
         <button
           type="button"
           onClick={handleDownload}
-          className="ml-auto cursor-pointer rounded bg-neutral-900 p-2 text-sm text-neutral-100"
+          className="absolute bottom-0 right-0 m-3 ml-auto cursor-pointer rounded bg-neutral-900 p-2 text-sm text-neutral-100 hover:bg-neutral-800"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -20,7 +20,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         <title>Viewfinder</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <div className="mx-auto flex w-11/12 flex-grow flex-col">
+      <div className="mx-auto flex w-11/12 max-w-7xl flex-grow flex-col">
         <Navbar />
         <motion.main
           key={router.route}

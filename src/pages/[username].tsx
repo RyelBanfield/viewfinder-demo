@@ -26,7 +26,7 @@ const UserProfile: NextPage<
     <>
       <Head>
         <title>
-          {user.firstName} {user.lastName} | Viewfinder
+          {user.firstName} {user.lastName}&apos;s Viewfinder
         </title>
         <meta
           name="description"
@@ -35,10 +35,14 @@ const UserProfile: NextPage<
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1 className="mb-8 text-2xl font-semibold md:text-3xl">
-        {user.firstName} {user.lastName} | {images.length}
-        {" " + "images"}
-      </h1>
+      <div className="flex h-24 w-full flex-col items-center justify-center">
+        <h1 className="text-2xl font-semibold md:text-3xl">
+          {user.firstName} {user.lastName}
+        </h1>
+        <h2>
+          @<span className="font-bold">{user.username}</span>
+        </h2>
+      </div>
 
       <Gallery images={images} showNames={false} />
     </>
