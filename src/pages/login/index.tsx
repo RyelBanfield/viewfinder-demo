@@ -2,7 +2,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 
 import { AuthContext } from "../../context/AuthContext";
 import { auth } from "../../firebase";
@@ -11,17 +11,15 @@ const Login: NextPage = () => {
   const router = useRouter();
   const user = useContext(AuthContext);
 
+  if (user) router.push("/");
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  useEffect(() => {
-    if (user) router.replace("/");
-  }, [user]);
-
   const handleSignIn = () => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then(() => router.replace("/"))
-      .catch((error) => alert(error.message));
+    signInWithEmailAndPassword(auth, email, password).catch((error) =>
+      alert(error.message)
+    );
   };
 
   return (
@@ -30,12 +28,15 @@ const Login: NextPage = () => {
       <h2 className="mb-6 text-sm">Welcome back.</h2>
       <div className="flex w-64 flex-col">
         <input
+          type="email"
           className="mb-2 rounded-md border-2 border-neutral-200 p-2 focus:border-neutral-500 focus:outline-none"
           placeholder="Email"
+          autoComplete="on"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
+          type="password"
           className="mb-2 rounded-md border-2 border-neutral-200 p-2 focus:border-neutral-500 focus:outline-none"
           placeholder="Password"
           autoComplete="on"

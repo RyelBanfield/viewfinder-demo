@@ -3,7 +3,7 @@ import { doc, setDoc } from "firebase/firestore/lite";
 import { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 
 import { AuthContext } from "../../context/AuthContext";
 import { auth, db } from "../../firebase";
@@ -12,15 +12,13 @@ const Join: NextPage = () => {
   const router = useRouter();
   const user = useContext(AuthContext);
 
+  if (user) router.replace("/");
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  useEffect(() => {
-    if (user) router.replace("/");
-  }, [user]);
 
   const handleSignUp = () => {
     createUserWithEmailAndPassword(auth, email, password)
@@ -45,12 +43,14 @@ const Join: NextPage = () => {
       <div className="flex w-96 flex-col">
         <div className="flex justify-between">
           <input
+            type="text"
             className="mb-2 w-[48%] rounded-md border-2 border-neutral-200 p-2 focus:border-neutral-500 focus:outline-none"
             placeholder="First name"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
           />
           <input
+            type="text"
             className="mb-2 w-[48%] rounded-md border-2 border-neutral-200 p-2 focus:border-neutral-500 focus:outline-none"
             placeholder="Last name"
             value={lastName}
@@ -58,18 +58,21 @@ const Join: NextPage = () => {
           />
         </div>
         <input
+          type="email"
           className="mb-2 rounded-md border-2 border-neutral-200 p-2 focus:border-neutral-500 focus:outline-none"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
+          type="text"
           className="mb-2 rounded-md border-2 border-neutral-200 p-2 focus:border-neutral-500 focus:outline-none"
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
         <input
+          type="password"
           className="mb-2 rounded-md border-2 border-neutral-200 p-2 focus:border-neutral-500 focus:outline-none"
           placeholder="Password"
           value={password}
