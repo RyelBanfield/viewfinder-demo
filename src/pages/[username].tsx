@@ -35,13 +35,18 @@ const UserProfile: NextPage<
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="flex h-24 w-full flex-col items-center justify-center">
+      <div className="flex w-full items-center gap-3">
         <h1 className="text-2xl font-semibold md:text-3xl">
           {user.firstName} {user.lastName}
         </h1>
-        <h2>
+        <h2 className="rounded bg-neutral-300 p-1 px-2 text-sm ">
           @<span className="font-bold">{user.username}</span>
         </h2>
+      </div>
+      <div className="mb-3">
+        <p className="text-sm text-neutral-500">
+          {images.length} photos uploaded
+        </p>
       </div>
 
       <Gallery images={images} showNames={false} />
