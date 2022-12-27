@@ -32,7 +32,7 @@ const UserImage = ({
       <div className="mb-1 flex items-center justify-between">
         {withName && (
           <Link href={`/${image.username}`}>
-            <p className="text-md font-semibold">{`${image.firstName} ${image.lastName}`}</p>
+            <p className="text-md font-semibold hover:text-neutral-600">{`${image.firstName} ${image.lastName}`}</p>
           </Link>
         )}
       </div>
