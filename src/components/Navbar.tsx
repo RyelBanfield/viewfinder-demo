@@ -1,6 +1,6 @@
-import Link from 'next/link';
+import Link from "next/link";
 
-import NavMenu from './NavMenu';
+import NavMenu from "./NavMenu";
 
 const Navbar = () => {
   return (
@@ -18,6 +18,14 @@ const Navbar = () => {
         </Link>
         <NavMenu />
       </div>
+      {/* <div className="flex items-center justify-between">
+        <Link href="/submit-photos-old">
+          <button type="button" className="mr-6 font-medium hover:underline">
+            Submit a photo
+          </button>
+        </Link>
+        <NavMenu />
+      </div> */}
     </nav>
   );
 };
