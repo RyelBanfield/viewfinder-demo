@@ -12,6 +12,7 @@ import {
   where,
 } from "firebase/firestore/lite";
 import { ref, uploadBytes } from "firebase/storage";
+import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 
@@ -25,6 +26,7 @@ const uppy = new Uppy({
 });
 
 const Uploader = () => {
+  const router = useRouter();
   const user = useContext(AuthContext);
 
   useEffect(() => {
@@ -43,7 +45,7 @@ const Uploader = () => {
         const userSnapshot = await getDocs(userQuery);
         const userDoc = userSnapshot.docs[0];
 
-        imagesFromUppy.forEach(async (image: File) => {
+        const imageUploadPromises = imagesFromUppy.map(async (image: File) => {
           const uniqueID = uuidv4();
           const imageName = `${user.uid}_${uniqueID}`;
 
@@ -63,7 +65,9 @@ const Uploader = () => {
           }
         });
 
-        alert("Upload successful!");
+        await Promise.all(imageUploadPromises);
+
+        router.push(`/${user.username}`);
       }
     };
 
@@ -72,7 +76,7 @@ const Uploader = () => {
     return () => {
       uppy.off("complete", completeHandler);
     };
-  }, [user]);
+  }, [router, user]);
 
   return (
     <>
