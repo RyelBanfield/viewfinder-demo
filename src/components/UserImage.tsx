@@ -28,33 +28,36 @@ const UserImage = ({
   };
 
   return (
-    <div>
-      <div className="mb-1 flex items-center justify-between">
-        {withName && (
-          <Link href={`/${image.username}`}>
-            <p className="text-md font-semibold hover:text-neutral-600">{`${image.firstName} ${image.lastName}`}</p>
-          </Link>
-        )}
-      </div>
-
-      <div className="relative h-[600px] w-full">
-        <Image
-          src={image.url}
-          alt="User Image"
-          fill
-          sizes="(max-width: 768px) 100vw,
+    <div className="relative h-[600px] w-full">
+      <Image
+        src={image.url}
+        alt="User Image"
+        fill
+        sizes="(max-width: 768px) 100vw,
               (max-width: 1200px) 50vw,
               33vw"
-          priority
-          quality={100}
-          className="object-cover object-top transition-all duration-300 hover:opacity-90 hover:shadow-lg"
-        />
+        priority
+        quality={100}
+        className="absolute h-full w-full object-cover object-top"
+      />
+
+      <div className="absolute flex h-full w-full flex-col bg-neutral-900 opacity-0 duration-300 hover:opacity-80 hover:shadow-lg">
+        {withName && (
+          <div className="flex h-full w-full flex-col items-center justify-center">
+            <Link href={`/${image.username}`}>
+              <p className="text-center text-3xl font-semibold text-neutral-100">
+                {image.firstName} {image.lastName}
+              </p>
+            </Link>
+          </div>
+        )}
 
         <button
           type="button"
           onClick={handleDownload}
-          className="absolute bottom-0 right-0 m-3 ml-auto cursor-pointer rounded bg-neutral-900 p-2 text-sm text-neutral-100 hover:bg-neutral-800"
+          className="m-6 mt-auto flex cursor-pointer flex-row items-center justify-center gap-3 rounded bg-neutral-100 p-3 font-semibold text-neutral-900 hover:opacity-90"
         >
+          Download
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
