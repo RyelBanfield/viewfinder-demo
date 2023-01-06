@@ -61,11 +61,14 @@ const Uploader = () => {
               firstName: userDoc.data().firstName,
               lastName: userDoc.data().lastName,
               url: `https://firebasestorage.googleapis.com/v0/b/viewfinder-dev.appspot.com/o/${imageName}?alt=media`,
+              createdAt: new Date(),
             });
           }
         });
 
         await Promise.all(imageUploadPromises);
+
+        uppy.cancelAll();
 
         router.push(`/${user.username}`);
       }
