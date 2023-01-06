@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const Hero = () => {
   return (
-    <div className="relative mb-6 h-96">
+    <div className="relative mb-6 h-96 lg:h-[600px]">
       <Image
         src="/Hero.JPG"
         alt="Hero Image"
@@ -10,7 +10,7 @@ const Hero = () => {
         priority
         className="absolute rounded object-cover object-bottom"
       />
-      <div className="absolute inset-0 rounded bg-neutral-900 bg-opacity-75" />
+      <div className="absolute inset-0 rounded bg-neutral-900 bg-opacity-50" />
       <div className="absolute flex h-full w-full flex-col justify-center p-9 text-neutral-100">
         <h1 className="mb-6 text-2xl font-bold">View Finder</h1>
         <p className="text-lg font-semibold">

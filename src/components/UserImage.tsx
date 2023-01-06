@@ -41,7 +41,7 @@ const UserImage = ({
         className="absolute h-full w-full object-cover object-top"
       />
 
-      <div className="absolute flex h-full w-full flex-col bg-neutral-900 opacity-0 duration-300 hover:opacity-80 hover:shadow-lg">
+      <div className="absolute flex h-full w-full flex-col bg-neutral-900 opacity-0 duration-300 hover:opacity-75 hover:shadow-lg">
         {withName && (
           <div className="flex h-full w-full flex-col items-center justify-center">
             <Link href={`/${image.username}`}>
