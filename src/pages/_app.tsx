@@ -45,6 +45,11 @@ const App = ({ Component, pageProps }: AppProps) => {
           )}
         </motion.main>
       </div>
+      <footer className="flex flex-col items-center justify-center py-6">
+        <p className="text-center text-sm text-neutral-500">
+          &copy; 2023 Viewfinder. All rights reserved.
+        </p>
+      </footer>
     </AuthProvider>
   );
 };
