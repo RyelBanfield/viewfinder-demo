@@ -83,7 +83,13 @@ const Uploader = () => {
 
   return (
     <>
-      <Dashboard uppy={uppy} proudlyDisplayPoweredByUppy={false} />
+      <div className="flex flex-grow flex-col justify-center">
+        <Dashboard
+          uppy={uppy}
+          proudlyDisplayPoweredByUppy={false}
+          width="100%"
+        />
+      </div>
     </>
   );
 };
