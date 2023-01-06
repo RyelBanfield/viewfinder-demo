@@ -2,6 +2,7 @@ import { collection, getDocs } from "firebase/firestore/lite";
 import { InferGetServerSidePropsType, NextPage } from "next";
 
 import Gallery from "../components/Gallery";
+import Hero from "../components/Hero";
 import { db } from "../firebase";
 
 export type Image = {
@@ -16,7 +17,12 @@ export type Image = {
 const Home: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ images }) => {
-  return <Gallery images={images} showNames={true} />;
+  return (
+    <>
+      <Hero />
+      <Gallery images={images} showNames={true} />
+    </>
+  );
 };
 
 export const getServerSideProps = async () => {
