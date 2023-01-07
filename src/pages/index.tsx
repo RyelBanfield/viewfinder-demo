@@ -12,6 +12,10 @@ export type Image = {
   firstName: string;
   lastName: string;
   url: string;
+  createdAt: {
+    seconds: number;
+    nanoseconds: number;
+  };
 };
 
 const Home: NextPage<
@@ -41,11 +45,12 @@ export const getServerSideProps = async () => {
           "https://firebasestorage.googleapis.com",
           "https://ik.imagekit.io/zuge4mgxf"
         ),
+      createdAt: doc.data().createdAt,
     };
   }) as Image[];
 
   return {
-    props: { images },
+    props: { images: JSON.parse(JSON.stringify(images)) },
   };
 };
 

@@ -88,11 +88,12 @@ export const getServerSideProps = async (
           "https://firebasestorage.googleapis.com",
           "https://ik.imagekit.io/zuge4mgxf"
         ),
+      createdAt: doc.data().createdAt,
     };
   }) as Image[];
 
   return {
-    props: { user, images },
+    props: { user, images: JSON.parse(JSON.stringify(images)) },
   };
 };
 
