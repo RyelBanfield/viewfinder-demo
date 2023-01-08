@@ -85,7 +85,7 @@ const Home: NextPage = () => {
     <>
       <Hero />
       <Gallery images={galleryImages} showNames={true} />
-      <div ref={pageBottom}></div>
+      {galleryImages.length > 0 && <div ref={pageBottom}></div>}
     </>
   );
 };
