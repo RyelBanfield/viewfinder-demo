@@ -8,13 +8,9 @@ const Gallery = ({
   images: Image[];
   showNames: boolean;
 }) => {
-  const sortedImages = images.sort(
-    (a, b) => b.createdAt.seconds - a.createdAt.seconds
-  );
-
   return (
     <div className="mb-6 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-      {sortedImages.map((image: Image) => (
+      {images.map((image: Image) => (
         <UserImage key={image.url} image={image} withName={showNames} />
       ))}
     </div>

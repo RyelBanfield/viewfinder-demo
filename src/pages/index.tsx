@@ -1,9 +1,20 @@
-import { collection, getDocs } from "firebase/firestore/lite";
-import { InferGetServerSidePropsType, NextPage } from "next";
+import {
+  collection,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  QueryDocumentSnapshot,
+  startAfter,
+} from "firebase/firestore/lite";
+import { NextPage } from "next";
+import { useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
 
 import Gallery from "../components/Gallery";
 import Hero from "../components/Hero";
 import { db } from "../firebase";
+import buildImageObjects from "../utils/buildImageObjects";
 
 export type Image = {
   id: string;
@@ -12,46 +23,71 @@ export type Image = {
   firstName: string;
   lastName: string;
   url: string;
-  createdAt: {
-    seconds: number;
-    nanoseconds: number;
-  };
+  createdAt: Date;
 };
 
-const Home: NextPage<
-  InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({ images }) => {
+const Home: NextPage = () => {
+  const { ref: pageBottom, inView } = useInView();
+
+  const [galleryImages, setGalleryImages] = useState<Image[]>([]);
+  const [endOfGallery, setEndOfGallery] = useState(false);
+  const [lastVisibleImageDoc, setLastVisibleImageDoc] =
+    useState<QueryDocumentSnapshot | null>(null);
+
+  useEffect(() => {
+    const fetchInitialImages = async () => {
+      const imagesQuery = query(
+        collection(db, "images"),
+        orderBy("createdAt", "desc"),
+        limit(3)
+      );
+
+      const imagesDocs = await getDocs(imagesQuery);
+
+      setLastVisibleImageDoc(
+        imagesDocs.docs[imagesDocs.docs.length - 1] as QueryDocumentSnapshot
+      );
+
+      const images = buildImageObjects(imagesDocs);
+
+      setGalleryImages(images);
+    };
+
+    fetchInitialImages();
+  }, []);
+
+  useEffect(() => {
+    const fetchMoreImages = async () => {
+      const imagesQuery = query(
+        collection(db, "images"),
+        orderBy("createdAt", "desc"),
+        startAfter(lastVisibleImageDoc),
+        limit(3)
+      );
+
+      const imagesDocs = await getDocs(imagesQuery);
+
+      if (imagesDocs.docs.length < 3) setEndOfGallery(true);
+
+      setLastVisibleImageDoc(
+        imagesDocs.docs[imagesDocs.docs.length - 1] as QueryDocumentSnapshot
+      );
+
+      setGalleryImages((prevImages) => [...prevImages, ...images]);
+
+      const images = buildImageObjects(imagesDocs);
+    };
+
+    if (inView && !endOfGallery) fetchMoreImages();
+  }, [inView, lastVisibleImageDoc, endOfGallery]);
+
   return (
     <>
       <Hero />
-      <Gallery images={images} showNames={true} />
+      <Gallery images={galleryImages} showNames={true} />
+      <div ref={pageBottom}></div>
     </>
   );
-};
-
-export const getServerSideProps = async () => {
-  const imagesDocs = await getDocs(collection(db, "images"));
-
-  const images = imagesDocs.docs.map((doc) => {
-    return {
-      id: doc.id,
-      uid: doc.data().uid,
-      username: doc.data().username,
-      firstName: doc.data().firstName,
-      lastName: doc.data().lastName,
-      url: doc
-        .data()
-        .url.replace(
-          "https://firebasestorage.googleapis.com",
-          "https://ik.imagekit.io/zuge4mgxf"
-        ),
-      createdAt: doc.data().createdAt,
-    };
-  }) as Image[];
-
-  return {
-    props: { images: JSON.parse(JSON.stringify(images)) },
-  };
 };
 
 export default Home;
