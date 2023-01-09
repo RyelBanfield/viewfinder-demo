@@ -1,6 +1,6 @@
 import { QueryDocumentSnapshot, QuerySnapshot } from "firebase/firestore/lite";
 
-import { Image } from "../pages";
+import { ImageType } from "../types";
 
 const buildImageObjects = (imageDocuments: QuerySnapshot) => {
   return imageDocuments.docs.map((doc: QueryDocumentSnapshot) => {
@@ -18,7 +18,7 @@ const buildImageObjects = (imageDocuments: QuerySnapshot) => {
         ),
       createdAt: doc.data().createdAt,
     };
-  }) as Image[];
+  }) as ImageType[];
 };
 
 export default buildImageObjects;
