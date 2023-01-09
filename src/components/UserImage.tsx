@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import type { Image as ImageType } from "../pages";
+import type { ImageType } from "../types";
 
 const UserImage = ({
   image,
