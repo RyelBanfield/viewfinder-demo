@@ -1,27 +1,107 @@
-import { collection, getDocs, query, where } from "firebase/firestore/lite";
+import {
+  collection,
+  getCount,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  QueryDocumentSnapshot,
+  startAfter,
+  where,
+} from "firebase/firestore/lite";
 import {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
   NextPage,
 } from "next";
 import Head from "next/head";
+import { useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
 
 import Gallery from "../components/Gallery";
 import { db } from "../firebase";
-import type { Image } from "../pages";
+import { ImageType, UserType } from "../types";
+import buildImageObjects from "../utils/buildImageObjects";
 
-type User = {
-  uid: string;
-  username: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  accountType: string;
+const UserProfileHeader = ({ user }: { user: UserType }) => {
+  return (
+    <>
+      <div className="flex w-full items-center gap-3">
+        <h1 className="text-2xl font-semibold md:text-3xl">
+          {user.firstName} {user.lastName}
+        </h1>
+        <h2 className="rounded bg-neutral-300 p-1 px-2 text-sm ">
+          @<span className="font-bold">{user.username}</span>
+        </h2>
+      </div>
+      <div className="mb-3">
+        <p className="text-sm text-neutral-500">
+          {user.imagesUploaded} photos uploaded
+        </p>
+      </div>
+    </>
+  );
 };
 
 const UserProfile: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({ user, images }) => {
+> = ({ user }) => {
+  const { ref: pageBottom, inView } = useInView();
+
+  const [galleryImages, setGalleryImages] = useState<ImageType[]>([]);
+  const [endOfGallery, setEndOfGallery] = useState(false);
+  const [lastVisibleImageDoc, setLastVisibleImageDoc] =
+    useState<QueryDocumentSnapshot | null>(null);
+
+  useEffect(() => {
+    const fetchInitialImages = async () => {
+      const imagesQuery = query(
+        collection(db, "images"),
+        where("uid", "==", user.uid),
+        orderBy("createdAt", "desc"),
+        limit(3)
+      );
+
+      const imagesDocs = await getDocs(imagesQuery);
+
+      setLastVisibleImageDoc(
+        imagesDocs.docs[imagesDocs.docs.length - 1] as QueryDocumentSnapshot
+      );
+
+      const images = buildImageObjects(imagesDocs);
+
+      setGalleryImages(images);
+    };
+
+    fetchInitialImages();
+  }, [user.uid]);
+
+  useEffect(() => {
+    const fetchMoreImages = async () => {
+      const imagesQuery = query(
+        collection(db, "images"),
+        where("uid", "==", user.uid),
+        orderBy("createdAt", "desc"),
+        startAfter(lastVisibleImageDoc),
+        limit(3)
+      );
+
+      const imagesDocs = await getDocs(imagesQuery);
+
+      if (imagesDocs.docs.length < 3) setEndOfGallery(true);
+
+      setLastVisibleImageDoc(
+        imagesDocs.docs[imagesDocs.docs.length - 1] as QueryDocumentSnapshot
+      );
+
+      setGalleryImages((prevImages) => [...prevImages, ...images]);
+
+      const images = buildImageObjects(imagesDocs);
+    };
+
+    if (inView && !endOfGallery) fetchMoreImages();
+  }, [endOfGallery, inView, lastVisibleImageDoc, user.uid]);
+
   return (
     <>
       <Head>
@@ -35,21 +115,9 @@ const UserProfile: NextPage<
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="flex w-full items-center gap-3">
-        <h1 className="text-2xl font-semibold md:text-3xl">
-          {user.firstName} {user.lastName}
-        </h1>
-        <h2 className="rounded bg-neutral-300 p-1 px-2 text-sm ">
-          @<span className="font-bold">{user.username}</span>
-        </h2>
-      </div>
-      <div className="mb-3">
-        <p className="text-sm text-neutral-500">
-          {images.length} photos uploaded
-        </p>
-      </div>
-
-      <Gallery images={images} showNames={false} />
+      <UserProfileHeader user={user} />
+      <Gallery images={galleryImages} showNames={false} />
+      {galleryImages.length > 0 && <div ref={pageBottom}></div>}
     </>
   );
 };
@@ -59,11 +127,14 @@ export const getServerSideProps = async (
 ) => {
   const username = context.query.username;
 
-  const usersRef = collection(db, "users");
-  const userQuery = query(usersRef, where("username", "==", username));
+  const userQuery = query(
+    collection(db, "users"),
+    where("username", "==", username)
+  );
+
   const userDocs = await getDocs(userQuery);
 
-  const user = userDocs.docs[0]?.data() as User;
+  const user = userDocs.docs[0]?.data() as UserType;
 
   if (!user) {
     return {
@@ -71,29 +142,17 @@ export const getServerSideProps = async (
     };
   }
 
-  const imagesRef = collection(db, "images");
-  const imagesQuery = query(imagesRef, where("uid", "==", user.uid));
-  const imagesDocs = await getDocs(imagesQuery);
+  const imagesQuery = query(
+    collection(db, "images"),
+    where("uid", "==", user.uid)
+  );
 
-  const images = imagesDocs.docs.map((doc) => {
-    return {
-      id: doc.id,
-      uid: doc.data().uid,
-      username: doc.data().username,
-      firstName: doc.data().firstName,
-      lastName: doc.data().lastName,
-      url: doc
-        .data()
-        .url.replace(
-          "https://firebasestorage.googleapis.com",
-          "https://ik.imagekit.io/zuge4mgxf"
-        ),
-      createdAt: doc.data().createdAt,
-    };
-  }) as Image[];
+  const countFromServer = await getCount(imagesQuery);
+
+  user.imagesUploaded = countFromServer.data().count;
 
   return {
-    props: { user, images: JSON.parse(JSON.stringify(images)) },
+    props: { user },
   };
 };
 
